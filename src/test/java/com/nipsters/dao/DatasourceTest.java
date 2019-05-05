@@ -10,13 +10,13 @@ public class DatasourceTest {
     
     @Test
     public void dbDefaultCreds(){
-        Datasource ds = new Datasource("jdbc:hsqldb:file:./data");
+        Datasource ds = new Datasource("jdbc:hsqldb:file:./data/maso");
         assertNotNull("Não houve conexão com o banco", ds.getConnection());
     }
 
     @Test
     public void dbDefinedCreds(){
-        Datasource ds = new Datasource("jdbc:hsqldb:file:./data");
+        Datasource ds = new Datasource("jdbc:hsqldb:file:./data/maso");
         assertNotNull("Não houve conexão com o banco", ds.getConnection());
     }
 }
