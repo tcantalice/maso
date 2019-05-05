@@ -1,6 +1,17 @@
+# Project IDE files
+.classpath
+.project
+
 # Intellij IDEA
 *.iml
-.idea
+.idea/
 
 # Java
 *.class
+
+# VSCode
+.settings/
+.vscode/
+
+# Maven
+target/
