@@ -1,6 +1,7 @@
-# Project IDE files
+# Project files
 .classpath
 .project
+data/
 
 # Intellij IDEA
 *.iml
