@@ -1,11 +1,11 @@
 package com.nipsters.dao;
 
-import java.util.List;
+import java.util.Map;
 
-public interface DAO<Entity>{
+public interface DAO<Entity,PK>{
 	public void insert(Entity object);
-	public List<Entity> getAll();
-	public List<Entity> getByFilter(String field, Object value);
+	public Map<PK, Entity> getAll();
+	public Map<PK, Entity> getByFilter(String field, Object value);
 	public void remove(String pkValue);
 	public void update(Entity object);
 }

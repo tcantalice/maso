@@ -1,5 +1,6 @@
 package com.nipsters.dao;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -26,7 +27,7 @@ public class Datasource {
             conn = DriverManager.getConnection(this.url, this.username, this.password);
         }
         catch(SQLException sqle){
-            // TODO Exceções para problemas em conectar com o banco
+            // FIXME Exceções para problemas em conectar com o banco
             try{
                 conn = DriverManager.getConnection(this.url, "root", "");
             }
@@ -35,6 +36,17 @@ public class Datasource {
             }
         }
         return conn;
+    }
+
+    public void initialize(){
+        Connection conn = this.getConnection();
+        try {
+            Statement initializer = conn.createStatement();
+            initializer.executeUpdate("CREATE TABLE IF NOT EXISTS functions");
+            
+        } catch (SQLException e) {
+            //TODO: handle exception
+        }
     }
 	
 }
