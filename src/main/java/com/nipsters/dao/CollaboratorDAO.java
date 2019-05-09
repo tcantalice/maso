@@ -2,18 +2,19 @@ package com.nipsters.dao;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.time.LocalDate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.sql.ResultSet;
+import java.sql.Date;
 
 import com.nipsters.model.Collaborator;
 import com.nipsters.model.Genres;
 
 public class CollaboratorDAO{
 
-    private Map<Long, Collaborator> buff;
+    /* private Map<Long, Collaborator> buff;
 
     private static CollaboratorDAO instance;
 
@@ -28,7 +29,13 @@ public class CollaboratorDAO{
     }
 
     public void write(Collaborator collaborator){
-
+        PreparedStatement sql = conn.prepareStatement("INSERT INTO collaborators (name, birth, genre, function, sector) VALUES (?,?,?,?,?)");
+        sql.setString(1, collaborator.getName());
+        sql.setDate(2, Date.valueOf(collaborator.getBirth()));
+        sql.setInt(3, collaborator.getGenre().getValue());
+        sql.setString(4, collaborator.getFunction());
+        sql.setString(5, collaborator.getSector());
+        sql.executeUpdate();
     }
 
     public Collaborator get(long key){
@@ -51,5 +58,6 @@ public class CollaboratorDAO{
             
             return obj; // TODO Retornar obj independente de exceções
         }
-    }
+
+    } */
 }

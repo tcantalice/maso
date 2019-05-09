@@ -5,7 +5,10 @@ import com.nipsters.commons.commands.Command;
 public enum NewCommands implements Command {
 
     COLLABORATOR("Colaborador", "Criar um novo colaborador"),
-    ASO("Atestado", "Criar um novo ASO");
+    ASO("Atestado", "Criar um novo ASO"),
+    BACK("Voltar", "Retornar ao menu principal"){
+    
+    };
 
     private String label;
     private String desc;
@@ -15,7 +18,9 @@ public enum NewCommands implements Command {
         this.desc = desc;
     }
 
-    public void execute(){}
+    public void execute(){
+        return;
+    }
 
     public String toString() {
         return (this.label.toUpperCase() + " - " + this.desc);

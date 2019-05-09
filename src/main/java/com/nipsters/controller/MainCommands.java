@@ -12,7 +12,12 @@ public enum MainCommands implements Command{
     }, 
     SEARCH("Buscar", "Opções de busca"), 
     SETTINGS("Configurações", "Todas as configurações do sistema"), 
-    EXIT("Sair", "Encerra o sistema");
+    EXIT("Sair", "Encerra o sistema"){
+        @Override
+        public void execute() {
+            System.exit(0);
+        }
+    };
 
     private String label;
     private String desc;
