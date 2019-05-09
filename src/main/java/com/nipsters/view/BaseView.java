@@ -15,11 +15,11 @@ public abstract class BaseView implements View {
     }
 
     public void showView(){
-        System.out.print(String.format("##########"+
+        System.out.print(String.format("####################"+
         "\n%s"+
-        "\n##########"+
+        "\n####################"+
         "\n%s"+
-        "##########\n", this.title, this.message));
+        "####################\n", this.title, this.message));
     }
 
     public void updateView(){}
