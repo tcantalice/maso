@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Collaborator {
 
-    private long id;
+    private int id;
     private String name;
     private LocalDate birth;
     private Genres genre;
@@ -25,7 +25,7 @@ public class Collaborator {
         this.setSector(sector);
     }
 
-    public Collaborator(long id, String name, LocalDate birth, Genres genre, String function, String sector){
+    public Collaborator(int id, String name, LocalDate birth, Genres genre, String function, String sector){
         this(name, birth, genre, function, sector);
         this.setId(id);
     }
@@ -34,7 +34,7 @@ public class Collaborator {
         Getters & Setters
     */
 
-    public void setId(long id){
+    public void setId(int id){
         this.id = id;
     }
 
@@ -58,7 +58,7 @@ public class Collaborator {
         this.sector = sector;
     }
 
-    public long getId(){
+    public int getId(){
         return this.id;
     }
 

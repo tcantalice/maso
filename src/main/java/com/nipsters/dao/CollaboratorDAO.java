@@ -1,26 +1,25 @@
 package com.nipsters.dao;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
-import java.time.LocalDate;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
+import com.nipsters.exceptions.RegistryNotFoundException;
 import com.nipsters.model.Collaborator;
 import com.nipsters.model.Genres;
 
-public class CollaboratorDAO{
+public class CollaboratorDAO implements DAO<Collaborator>{
 
-    /* private Map<Long, Collaborator> buff;
-
+    private static Map<Integer, Collaborator> cache = new HashMap<>();
     private static CollaboratorDAO instance;
 
-    private CollaboratorDAO(){
-        this.buff = new HashMap<>();
-    }
+    private CollaboratorDAO(){}
 
     public static CollaboratorDAO getInstance(){
         if(instance == null)
@@ -28,36 +27,55 @@ public class CollaboratorDAO{
         return instance;
     }
 
-    public void write(Collaborator collaborator){
-        PreparedStatement sql = conn.prepareStatement("INSERT INTO collaborators (name, birth, genre, function, sector) VALUES (?,?,?,?,?)");
-        sql.setString(1, collaborator.getName());
-        sql.setDate(2, Date.valueOf(collaborator.getBirth()));
-        sql.setInt(3, collaborator.getGenre().getValue());
-        sql.setString(4, collaborator.getFunction());
-        sql.setString(5, collaborator.getSector());
-        sql.executeUpdate();
+    public Collaborator getById(int id) throws SQLException, RegistryNotFoundException{
+        if(cache.containsKey(id))
+            return cache.get(id);
+        Statement statement = Datasource.getConnection().createStatement();
+        ResultSet result = statement.executeQuery(
+            "SELECT * FROM collaborators WHERE id = " + id + ";");
+        if(result.next()){
+            return new Collaborator(id,
+            result.getString("name"),
+            result.getDate("birth").toLocalDate(),
+            Genres.valueOf(result.getInt("genre")),
+            result.getString("function"),
+            result.getString("sector"));
+        }
+        throw new RegistryNotFoundException();
     }
 
-    public Collaborator get(long key){
-        // FIXME Estruturar tratamento das exceções
-        if(this.buff.containsKey(key))
-            return this.buff.get(key);
-        else{
-            Collaborator obj = null;
-            // FIXME Resolver se a conexão será feita por passagem de parâmetro ou chamada estática
-            PreparedStatement sql = conn.prepareStatement("SELECT * FROM collaborators WHERE id=?");
-            sql.setLong(1, key);
+    @Override
+    public void insert(Collaborator entity) throws SQLException{
+        PreparedStatement statement = Datasource.getConnection().prepareStatement(
+            "INSERT INTO collaborators (name, genre, birth, function, sector) VALUES (?,?,?,?,?)"
+        );
+        statement.setString(1, entity.getName());
+        statement.setInt(2, entity.getGenre().getValue());
+        statement.setDate(3, Date.valueOf(entity.getBirth()));
+        statement.setString(4, entity.getFunction());
+        statement.setString(5, entity.getSector());
+        statement.executeUpdate();
+    }
 
-            ResultSet results = sql.executeQuery();
-            // TODO Lançar exceção caso os atributos não sejam alocados;
-            String name = results.getString("name");
-            LocalDate birth = LocalDate.parse(results.getString("birth"));
-            Genres genre = Genres.valueOf(results.getInt("genre"));
-
-            obj = new Collaborator(); // FIXME Só criar o objeto caso todos os atibutos forem setados
-            
-            return obj; // TODO Retornar obj independente de exceções
+    @Override
+    public void insert(List<Collaborator> entities) throws SQLException{
+        for(Collaborator entity : entities){
+            this.insert(entity);
         }
+    }
 
-    } */
+    @Override
+    public List<Collaborator> select(){
+        return null;
+    }
+
+    @Override
+    public void update(List<Collaborator> entities) throws SQLException{}
+
+    @Override
+    public void delete(Collaborator entity) throws SQLException{}
+
+    @Override
+    public void delete(List<Collaborator> entities) throws SQLException{}
+    
 }

@@ -1,7 +1,7 @@
 package com.nipsters.model;
 
 public enum Genres {
-    FEMALE(1, "Feminino"), MALE(2, "Masculino");
+    FEMALE(0, "Feminino"), MALE(1, "Masculino");
 
     private int value;
     private String label;

@@ -4,21 +4,21 @@ import java.time.LocalDate;
 
 public class Aso {
 
-    private long number;
+    private int number;
     private Collaborator collaborator;
     private TypeASO type;
     private LocalDate dated;
 
     public Aso(){}
     
-    public Aso(long number, Collaborator collaborator, TypeASO type, LocalDate dated){
+    public Aso(int number, Collaborator collaborator, TypeASO type, LocalDate dated){
         this.setNumber(number);
         this.setCollaborator(collaborator);
         this.setType(type);
         this.setDated(dated);
     }
 
-    public void setNumber(long number){
+    public void setNumber(int number){
         this.number = number;
     }
 
@@ -34,7 +34,7 @@ public class Aso {
         this.dated = dated;
     }
 
-    public long getNumber(){
+    public int getNumber(){
         return this.number;
     }
 
