@@ -43,7 +43,6 @@ public static LocalDate formatData(String data) throws IllegalArgumentException 
 	}
 	
 	public static int birthdayDate(LocalDate birthDate) {
-		
 		int age = LocalDate.now().getYear() - birthDate.getYear();
 		
 		if(LocalDate.now().getMonthValue() < birthDate.getMonthValue()) {
