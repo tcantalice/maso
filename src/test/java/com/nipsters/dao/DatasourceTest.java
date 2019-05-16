@@ -1,23 +1,20 @@
 package com.nipsters.dao;
 
 import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
 
 import com.nipsters.dao.Datasource;
-
+import com.nipsters.exceptions.FailureConnectionException;
 public class DatasourceTest {
-    
     @Test
-    public void dbDefaultCreds(){
-        Datasource ds = new Datasource("jdbc:hsqldb:file:./data/maso");
-        assertNotNull("Não houve conexão com o banco", ds.getConnection());
-    }
-
-    @Test
-    public void dbDefinedCreds(){
-        Datasource ds = new Datasource("jdbc:hsqldb:file:./data/maso");
-        assertNotNull("Não houve conexão com o banco", ds.getConnection());
+    public void testGetConnection(){
+        try{
+            System.out.println("Iniciando teste de conexão...");
+            Datasource.getConnection();
+            System.out.println("Teste concluído com sucesso");
+        }catch(FailureConnectionException fce){
+            System.out.println("Conexão falhou!");
+        }
     }
 }
 

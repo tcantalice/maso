@@ -3,8 +3,9 @@ package com.nipsters.dao;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import com.nipsters.exceptions.FailureConnectionException;
 
 public class Datasource {
     
@@ -22,31 +23,29 @@ public class Datasource {
     */
     private static Datasource instance;
 
-    private Datasource(String url, String username, String password){
+    private Datasource(String url, String username, String password) throws FailureConnectionException{
         this.url = url;
         this.username = username;
         this.password = password;
-
-        try {
+        try{
             this.connection = DriverManager.getConnection(this.url, this.username, this.password);
-        } catch (SQLException sqle) {
-            // FIXME Exceções para problemas em conectar com o banco
+        }catch(SQLException sqle){
+            throw new FailureConnectionException();
         }
     }
 
-    public static Connection getConnection(String url, String username, String password){
-        if(instance == null){
+    public static Connection getConnection(String url, String username, String password) throws FailureConnectionException{
+        if(instance == null)
             instance = new Datasource(url, username, password);
-        }
         return instance.connection;
     }
 
-    public static Connection getConnection(String url){
+    public static Connection getConnection(String url) throws FailureConnectionException{
         return getConnection(url, "root", "");
     }
 
-    public static Connection getConnection(){
-        return getConnection("jdbc:hsqldb:file:/data/maso");
+    public static Connection getConnection() throws FailureConnectionException{
+        return getConnection("jdbc:hsqldb:file:./data/maso");
     }
 
     public void initialize() throws SQLException{
