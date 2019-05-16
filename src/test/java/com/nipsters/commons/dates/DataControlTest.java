@@ -29,7 +29,7 @@ public class DataControlTest {
 		try {
 			DataControl.formatData("10052019");
 		}catch(IllegalArgumentException e) {
-			System.out.println("Entrada invÃ¡lida!");
+			System.out.println("Entrada invalida!");
 		}
 	}
 	
@@ -43,5 +43,7 @@ public class DataControlTest {
 	@Test
 	public void testeIdade() {
 		System.out.println(DataControl.birthdayDate(DataControl.formatData("17/07/2000")));
+		System.out.println(DataControl.birthdayDate(DataControl.formatData("16/03/1997")));
+		System.out.println(DataControl.birthdayDate(DataControl.formatData("01/04/2000")));
 	}
 }
