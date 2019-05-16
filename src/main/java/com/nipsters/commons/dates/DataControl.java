@@ -3,6 +3,7 @@ package com.nipsters.commons.dates;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Calendar;
 
 public class DataControl {
 public static LocalDate formatData(String data) throws IllegalArgumentException {
@@ -42,6 +43,16 @@ public static LocalDate formatData(String data) throws IllegalArgumentException 
 	}
 	
 	public static int birthdayDate(LocalDate birthDate) {
-		return LocalDate.now().compareTo(birthDate);
+		
+		int age = LocalDate.now().getYear() - birthDate.getYear();
+		
+		if(LocalDate.now().getMonthValue() < birthDate.getMonthValue()) {
+			age--;
+		}else if(LocalDate.now().getMonthValue() == birthDate.getMonthValue() 
+				&& LocalDate.now().getDayOfMonth() < birthDate.getDayOfMonth()) {
+			age--;
+		}
+		
+		return age;
 	}
 }

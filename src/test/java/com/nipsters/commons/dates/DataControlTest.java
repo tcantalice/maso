@@ -41,7 +41,7 @@ public class DataControlTest {
 	}
 	
 	@Test
-	public void testarCompareTo() {
-		System.out.println(DataControl.birthdayDate(DataControl.formatData("19/10/1990")));
+	public void testeIdade() {
+		System.out.println(DataControl.birthdayDate(DataControl.formatData("17/07/2000")));
 	}
 }
