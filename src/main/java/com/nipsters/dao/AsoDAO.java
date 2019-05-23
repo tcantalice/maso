@@ -10,8 +10,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 
-import com.nipsters.exceptions.FailureConnectionException;
-import com.nipsters.exceptions.UnknownEntityException;
 import com.nipsters.model.Aso;
 import com.nipsters.model.TypeASO;
 
@@ -30,13 +28,8 @@ public class AsoDAO implements DAO<Aso>{
 
     @Override
     public void insert(Aso entity) throws SQLException {
-        PreparedStatement statement = null;
-        try{
-            statement = Datasource.getConnection().prepareStatement(
+        PreparedStatement statement = Datasource.getConnection().prepareStatement(
             "INSERT INTO aso (number, id_collaborator, dated_to, type) VALUES (?,?,?,?)");
-        }catch(FailureConnectionException fce){
-            throw new SQLException(fce);
-        }
         statement.setInt(1, entity.getNumber());
         statement.setInt(2, entity.getCollaborator().getId());
         statement.setDate(3, Date.valueOf(entity.getDated()));
@@ -55,40 +48,50 @@ public class AsoDAO implements DAO<Aso>{
     public List<Aso> select() throws SQLException{
         String sql = "SELECT * FROM asos";
         List<Aso> entities = new ArrayList<>();
-        Statement statement = null;
-        try{
-            statement = Datasource.getConnection().createStatement();
-        }catch(FailureConnectionException fce){
-            throw new SQLException(fce);
-        }
+        Statement statement = Datasource.getConnection().createStatement();
+
         ResultSet results = statement.executeQuery(sql);
-        while(results.next()){
-            try{
-                entities.add(new Aso(
-                    results.getInt("number"),
-                    CollaboratorDAO.getInstance().getById(results.getInt("id_collaborators")),
-                    TypeASO.valueOf(results.getInt("type")),
-                    results.getDate("dated_to").toLocalDate()
-                ));
-            }
-            catch(UnknownEntityException uee){
-                continue;
-            }
-        }
+        /*while(results.next()){
+            entities.add(new Aso(
+                results.getInt("number"),
+                
+            ));
+        }*/
+       
         return entities;
     }
 
     @Override
-    public void update(List<Aso> entitie){
-
+    public void update(Aso entity) throws SQLException{
+        String sql = "UPDATE asos SET number = ?, collaborator = ?, type = ?, dated = ? WHERE id = ?;";
+        PreparedStatement statement = Datasource.getConnection().prepareStatement(sql);
+        statement.setInt(1, entity.getNumber());
+        statement.setInt(2, entity.getCollaborator().getId());
+        statement.setInt(3, entity.getType().getValue());
+        statement.setDate(4, Date.valueOf(entity.getDated()));
+        statement.executeUpdate();
     }
 
     @Override
-    public void delete(Aso entity){
-        
+    public void update(List<Aso> entities)throws SQLException{
+        for(Aso entity : entities){
+            this.update(entity);
+        }
     }
 
     @Override
-    public void delete(List<Aso> entities){}
+    public void delete(Aso entity) throws SQLException{
+        String sql = "DELETE FROM asos WHERE number = ?;";
+        PreparedStatement statement = Datasource.getConnection().prepareStatement(sql);
+        statement.setInt(1, entity.getNumber());
+        statement.executeUpdate();
+    }
+
+    @Override
+    public void delete(List<Aso> entities) throws SQLException{
+        for(Aso entity : entities){
+            this.delete(entity);
+        }
+    }
     
 }

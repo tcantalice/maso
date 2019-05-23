@@ -5,22 +5,24 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
+import java.time.Month;
+
 import org.junit.Test;
 
 public class DataControlTest {
 	@Test
 	public void testarData() {
-		assertEquals(LocalDate.now(), DataControl.formatData("11/05/2019"));
+		assertEquals(LocalDate.of(2019, Month.MAY, 11), DataControl.formatData("11/05/2019"));
 	}
 	
 	@Test
 	public void testarDataComTraco() {
-		assertEquals(LocalDate.now(), DataControl.formatData("11-05-2019"));
+		assertEquals(LocalDate.of(2019, Month.MAY, 11), DataControl.formatData("11-05-2019"));
 	}
 	
 	@Test
 	public void testarDataComPonto() {
-		assertEquals(LocalDate.now(), DataControl.formatData("11.05.2019"));
+		assertEquals(LocalDate.of(2019, Month.MAY, 11), DataControl.formatData("11.05.2019"));
 	}
 
 	

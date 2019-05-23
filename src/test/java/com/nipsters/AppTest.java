@@ -2,6 +2,7 @@ package com.nipsters;
 
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -13,6 +14,7 @@ public class AppTest
      * Rigorous Test :-)
      */
     @Test
+    @Ignore
     public void shouldAnswerWithTrue()
     {
         assertTrue( true );
