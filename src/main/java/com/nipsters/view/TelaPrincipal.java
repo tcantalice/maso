@@ -12,7 +12,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import de.javasoft.plaf.synthetica.SyntheticaClassyLookAndFeel;
+//import de.javasoft.plaf.synthetica.SyntheticaClassyLookAndFeel;
+//import com.jyloo.synthetica.SyntheticaClassyLookAndFeel;
 
 public class TelaPrincipal extends JFrame {
 
@@ -23,8 +24,8 @@ public class TelaPrincipal extends JFrame {
 		 
 	     try {  
 	        
-	       UIManager.put("Synthetica.window.decoration", Boolean.FALSE);   
-	       UIManager.setLookAndFeel(new SyntheticaClassyLookAndFeel());  
+	       //UIManager.put("Synthetica.window.decoration", Boolean.FALSE);   
+	       //UIManager.setLookAndFeel("com.jyloo.synthetica.SyntheticaStandardLookAndFell");  
 	       (new TelaPrincipal()).show();  
 	     } catch (Exception erro) {  
 	       erro.printStackTrace();  

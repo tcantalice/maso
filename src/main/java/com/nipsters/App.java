@@ -1,15 +1,19 @@
 package com.nipsters;
 
-import com.nipsters.view.MainView;
+import javax.swing.UIManager;
+import de.javasoft.plaf.synthetica.SyntheticaPlainLookAndFeel;
 
-/**
- * Hello world!
- *
- */
+import com.nipsters.view.*;
+
 public class App 
 {
     public static void main( String[] args )
     {
-        MainView.getInstance().showView();
+        try{
+            UIManager.setLookAndFeel(new SyntheticaPlainLookAndFeel());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        (new TelaPrincipal()).show();
     }
 }
