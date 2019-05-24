@@ -63,9 +63,10 @@ public class AsoDAO implements DAO<Aso>{
 
     @Override
     public void update(Aso entity) throws SQLException{
-        String sql = "UPDATE asos SET number = ?, collaborator = ?, type = ?, dated = ? WHERE id = ?;";
+        String sql = "UPDATE asos SET number = ?, collaborator = ?, type = ?, dated = ? WHERE number = ?;";
         PreparedStatement statement = Datasource.getConnection().prepareStatement(sql);
         statement.setInt(1, entity.getNumber());
+        statement.setInt(5, entity.getNumber());
         statement.setInt(2, entity.getCollaborator().getId());
         statement.setInt(3, entity.getType().getValue());
         statement.setDate(4, Date.valueOf(entity.getDated()));

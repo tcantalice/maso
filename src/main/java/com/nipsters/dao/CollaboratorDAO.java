@@ -96,23 +96,47 @@ public class CollaboratorDAO implements DAO<Collaborator>{
         ResultSet result = statement.executeQuery();
 
         if(result.next()){
-            
+            collab.setId(id);
+            collab.setName(result.getString("name"));
+            collab.setBirth(result.getDate("birth").toLocalDate());
+            collab.setGenre(Genres.valueOf(result.getInt("genre")));
+            collab.setFunction(result.getString("function"));
+            collab.setSector(result.getString("sector"));
+            return collab;
         }
-        return collab;
+        else{
+            //throw new
+        }
     }
 
     @Override
     public void update(Collaborator entity) throws SQLException {
-        String sql = "UPDATE collaborators SET";
+        String sql = "UPDATE collaborators SET id = ?, name = ?, birth = ?, genre = ?, function = ?, sector = ? WHERE id = ?;";
+        PreparedStatement statement = Datasource.getConnection().prepareStatement(sql);
+        statement.setInt(1, entity.getId());
+        statement.setInt(7, entity.getId());
+        statement.setString(2, entity.getName());
+        statement.setDate(3, Date.valueOf(entity.getBirth()));
+        statement.setInt(4, entity.getGenre().getValue());
+        statement.setString(5, entity.getFunction());
+        statement.setString(6, entity.getSector());
+        statement.executeUpdate();
     }
 
     @Override
     public void update(List<Collaborator> entities) throws SQLException{
-        String sql = "UPDATE collaborators ";
+        for(Collaborator entity : entities){
+            this.update(entity);
+        }
     }
 
     @Override
-    public void delete(Collaborator entity) throws SQLException{}
+    public void delete(Collaborator entity) throws SQLException{
+        String sql = "DELETE FROM collaborators WHERE id = ?;";
+        PreparedStatement statement = Datasource.getConnection().prepareStatement(sql);
+        statement.setInt(1, entity.getId());
+        statement.executeUpdate();
+    }
 
     @Override
     public void delete(List<Collaborator> entities) throws SQLException{}
