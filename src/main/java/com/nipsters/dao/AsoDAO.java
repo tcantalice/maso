@@ -28,8 +28,8 @@ public class AsoDAO implements DAO<Aso>{
 
     @Override
     public void insert(Aso entity) throws SQLException {
-        PreparedStatement statement = Datasource.getConnection().prepareStatement(
-            "INSERT INTO aso (number, id_collaborator, dated_to, type) VALUES (?,?,?,?)");
+        String sql = "INSERT INTO aso (number, id_collaborator, dated_to, type) VALUES (?,?,?,?)";
+        PreparedStatement statement = Datasource.getInstance().getPreparedStatement(sql);
         statement.setInt(1, entity.getNumber());
         statement.setInt(2, entity.getCollaborator().getId());
         statement.setDate(3, Date.valueOf(entity.getDated()));
@@ -48,7 +48,7 @@ public class AsoDAO implements DAO<Aso>{
     public List<Aso> select() throws SQLException{
         String sql = "SELECT * FROM asos";
         List<Aso> entities = new ArrayList<>();
-        Statement statement = Datasource.getConnection().createStatement();
+        Statement statement = Datasource.getInstance().getStatement();
 
         ResultSet results = statement.executeQuery(sql);
         /*while(results.next()){
@@ -64,7 +64,7 @@ public class AsoDAO implements DAO<Aso>{
     @Override
     public void update(Aso entity) throws SQLException{
         String sql = "UPDATE asos SET number = ?, collaborator = ?, type = ?, dated = ? WHERE number = ?;";
-        PreparedStatement statement = Datasource.getConnection().prepareStatement(sql);
+        PreparedStatement statement = Datasource.getInstance().getPreparedStatement(sql);
         statement.setInt(1, entity.getNumber());
         statement.setInt(5, entity.getNumber());
         statement.setInt(2, entity.getCollaborator().getId());
@@ -83,7 +83,7 @@ public class AsoDAO implements DAO<Aso>{
     @Override
     public void delete(Aso entity) throws SQLException{
         String sql = "DELETE FROM asos WHERE number = ?;";
-        PreparedStatement statement = Datasource.getConnection().prepareStatement(sql);
+        PreparedStatement statement = Datasource.getInstance().getPreparedStatement(sql);
         statement.setInt(1, entity.getNumber());
         statement.executeUpdate();
     }

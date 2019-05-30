@@ -1,11 +1,14 @@
 package com.nipsters.dao;
 
 import java.sql.Statement;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-import com.nipsters.exceptions.FailureConnectionException;
 
 public class Datasource {
     
@@ -27,7 +30,7 @@ public class Datasource {
     +"type TINYINT NOT NULL, "
     +"PRIMARY KEY (number));";
     /*
-        Atributos
+        Credenciais
     */
     private String url;
     private String username;
@@ -47,43 +50,77 @@ public class Datasource {
         this.url = url;
         this.username = username;
         this.password = password;
+
         try{
-            this.connection = DriverManager.getConnection(this.url, this.username, this.password);
+            this.startConnection();
         }catch(SQLException sqle){
-            System.out.println(String.format("[ERROR: %d] - %s", sqle.getErrorCode(), sqle.getMessage()));
             sqle.printStackTrace();
         }
-        initialize();
+
+        if(Files.notExists(Paths.get("./data/collaborator.txt"), LinkOption.NOFOLLOW_LINKS))
+            createTables();
     }
 
-    public static Connection getConnection(String url, String username, String password){
-        if(instance == null)
+    /* Getting instance */
+    public static Datasource getInstance(){
+        return instance;
+    }
+
+
+    /* Initializers */
+    public static void init(){
+        init("jdbc:hsqldb:file:./data/maso");
+    }
+
+    public static void init(String url){
+        init(url, "SA", "");
+    }
+
+    public static void init(String url, String username, String password){
+        if (instance == null)
             instance = new Datasource(url, username, password);
-        return instance.connection;
     }
 
-    public static Connection getConnection(String url){
-        return getConnection(url, "root", "");
+    /* Getting connection */
+    public Connection getConnection(){
+        return this.connection;
     }
 
-    public static Connection getConnection(){
-        return getConnection("jdbc:hsqldb:file:./data/maso");
-    }
 
-    private void initialize(){
+    /* DB creators */
+    private void createTables(){
         Statement statement = null;
         try{
-            statement = connection.createStatement();
+            statement = this.getStatement();
             statement.executeUpdate(SQL_TABLE_COLLABORATORS);
             statement.executeUpdate(SQL_TABLE_ASO);
-            statement.executeUpdate("SET TABLE asos SOURCE \"asos;fs=|;quoted=false\";");
-            statement.executeUpdate("SET TABLE collaborators SOURCE \"collaborators;quoted=false\";");
+            statement.executeUpdate("SET TABLE asos SOURCE \"asos.txt;fs=|;quoted=false\";");
+            statement.executeUpdate("SET TABLE collaborators SOURCE \"collaborators.txt;quoted=false\";");
         }catch(SQLException sqle){
             System.out.println(String.format("[ERROR: %d] - %s", sqle.getErrorCode(), sqle.getMessage()));
             sqle.printStackTrace();
         }
-        
-        
     }
-	
+
+    /* Connection controllers */
+    private void startConnection() throws SQLException{
+        this.connection = DriverManager.getConnection(this.url, this.username, this.password);
+    }
+
+    public void restartConnection(){
+        try{
+            if(!this.connection.isClosed())
+                this.connection.close();
+            this.startConnection();
+        }catch(SQLException sqle){ instance = null; }
+    }
+    
+    /* Statements */
+    public Statement getStatement() throws SQLException{
+        return this.connection.createStatement();
+    }
+
+    public PreparedStatement getPreparedStatement(String sql) throws SQLException{
+        return this.connection.prepareStatement(sql);
+    }
 }
